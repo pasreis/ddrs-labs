@@ -21,7 +21,7 @@ run = function(lambda, mu, n) {
 		
 		if (next_event_type == ARRIVAL) {
 			# Schedule next arrival
-			event_list[1] = time + rexp(1, mu)
+			event_list[1] = time + rexp(1, lambda)
 
 			if (server_status == BUSY) {
 				queue_arrival_time = c(queue_arrival_time, time)
@@ -31,7 +31,7 @@ run = function(lambda, mu, n) {
 				server_status = BUSY
 
 				# Schedule next departure
-				event_list[2] = time + rexp(1, lambda)
+				event_list[2] = time + rexp(1, mu)
 			}
 		} else { # Departure
 			if (num_in_queue == 0) {
@@ -39,19 +39,19 @@ run = function(lambda, mu, n) {
 				event_list[2] = Inf
 			} else { # There are clients in the queue
 				# Calculte accumulated delay in queue
-				acum_delay = acum_delay + (time - queue_arrival_time[1])
-
+				acum_delay = acum_delay + time - queue_arrival_time[1]
+				
 				# Remove client from queue
 				queue_arrival_time = queue_arrival_time[-1]
 				num_in_queue = num_in_queue - 1
 				num_queue_completed = num_queue_completed + 1
 				
 				# Schedule next departure
-				event_list[2] = time + rexp(1, lambda)
+				event_list[2] = time + rexp(1, mu)
 			}
 		}
 	}
-	print(paste("num_queue_completed =", num_queue_completed))
+	
 	avg_delay = acum_delay / num_queue_completed
 }
 
@@ -74,7 +74,7 @@ simulate = function(lambda, mu, n, n_runs, conf_int) {
 	avg_delays = c()
 	theo_avg_delay = lambda / (mu * (mu - lambda))
 
-	for (i in c(1:n_runs)) {
+	for (i in (1:n_runs)) {
 		avg_delays = c(avg_delays, run(lambda, mu, n))
 	}
 
