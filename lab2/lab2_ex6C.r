@@ -56,7 +56,6 @@ run = function(lambda, mu, n) {
 }
 
 print_stats = function(n, vector, conf_int) {
-	print(vector)
 	pop_mean = mean(vector)
 	pop_var = var(vector)
 	alpha_2 = (1 - conf_int) / 2
