@@ -7,7 +7,7 @@ SUCCESS <- 1
 FAILURE <- 0
 
 # Parameters
-alpha <- 0.1
+alpha <- 0.4
 beta <- 0.6
 p <- (1 - alpha) / (1 - alpha + beta)
 

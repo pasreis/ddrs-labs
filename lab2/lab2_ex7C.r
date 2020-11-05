@@ -3,6 +3,7 @@ source("lab2_ex7C_simulate.r")
 n_0 = 10
 x = 0
 avg_delays = c()
+set.seed(81);
 
 replication_deletion = function(n_0, k, ArrivalRate, ServiceRate, N, conf_int, gama) {
 	theo_avg_delay = ArrivalRate / (ServiceRate * (ServiceRate - ArrivalRate))
@@ -30,7 +31,7 @@ replication_deletion = function(n_0, k, ArrivalRate, ServiceRate, N, conf_int, g
 		x = x + 1
 	}
 }
-replication_deletion(5, 5, 3, 4, 50, 0.975, 0.1)
+replication_deletion(10, 100, 1, 2, 2000, 0.95, 0.05)
 #while()
 # build confidence interval with warm up
 # add replicas while stopping condition is not met
