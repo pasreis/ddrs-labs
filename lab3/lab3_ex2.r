@@ -1,5 +1,5 @@
-my_data <- read.table("z:\\Documents\\MEIC\\SEMESTRE3\\DDRS\\labs\\lab3\\data\\2dtmcdata.txt", sep="\t")
-#my_data <- read.table("/Users/enrico/Desktop/2dtmcdata.txt", sep="\t")
+# my_data <- read.table("z:\\Documents\\MEIC\\SEMESTRE3\\DDRS\\labs\\lab3\\data\\2dtmcdata.txt", sep="\t")
+# my_data <- read.table("2dtmcdata.txt", sep="\t")
 
 est_trans_prob <- function(my_data) {
 	trans_count <- matrix(0, nrow=2, ncol=2)
