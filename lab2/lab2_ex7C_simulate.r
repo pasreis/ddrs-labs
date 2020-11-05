@@ -28,12 +28,12 @@ simulate = function(k, ArrivalRate, ServiceRate, N) {
 		} else {
 
 			if (NumInQueue==0) {
-
+				
 				ServerStatus=0
 				EventList[2]=Inf
 
 			} else {
-				
+
 				if (NumQueueCompleted > k) {
 					AcumDelay=AcumDelay+Time-QueueArrivalTime[1]	
 				}

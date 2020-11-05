@@ -1,6 +1,7 @@
-ArrivalRate=1 # lamda
-ServiceRate=1 # mu
-n = 1000 # number of clients that traversed the queue
+ArrivalRate=3 # lamda
+ServiceRate=4 # mu
+set.seed(62)
+n = 1500 # number of clients that traversed the queue
 Time=0
 NumQueueCompleted=0
 numSystemCompleted = 0
