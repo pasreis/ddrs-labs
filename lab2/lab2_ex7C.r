@@ -30,7 +30,7 @@ replication_deletion = function(n_0, k, ArrivalRate, ServiceRate, N, conf_int, g
 		x = x + 1
 	}
 }
-replication_deletion(5, 25, 3, 4, 1000, 0.975, 0.01)
+replication_deletion(5, 5, 3, 4, 50, 0.975, 0.1)
 #while()
 # build confidence interval with warm up
 # add replicas while stopping condition is not met
