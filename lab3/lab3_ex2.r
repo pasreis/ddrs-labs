@@ -22,6 +22,6 @@ est_trans_prob <- function(my_data) {
 	c(alpha, beta)
 }
 
-x <- est_trans_prob(data)
+x <- est_trans_prob(my_data)
 print(paste("alpha =", x[1]))
 print(paste("beta =", x[2]))
