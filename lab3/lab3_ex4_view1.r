@@ -17,18 +17,23 @@ for (i in (1:3)) {
 		if (i == j) {
 			P[i, j] <- 0
 		} else {
-			P[i, j] <- 1 / 2
+			if (lambdas[i, j] == 0)  {
+				P[i, j] <- 0
+			} else {
+				P[i, j] <- 1 / 2
+			}
 		}
 	}
 }
-
+print(P)
+print(lambdas)
 # Define initial state
 state <- round(runif(1, min=1, max=3), digits=0)
 next_jump <- Inf
 
 for (k in (0:N)) {
+	next_jump <- dexp(1, sum(lambdas[state,]))
 	if (state == 1) {
-		next_jump <- dexp(1, lambdas[1,2])
 		state <- 1
 	} else if (state == 2) {
 		next_jump <- dexp(1, sum(lambdas[2,]))
