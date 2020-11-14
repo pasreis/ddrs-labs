@@ -61,3 +61,6 @@ pvec = c(0.3,0.4,0.5,0.6);
 
 plot(pvec, throughputs, main="Theoretical Throughput as a Function of p:\n
         N=10, sigma=0.1", xlab="p", ylab="throughput", type="o")
+
+# throughput should decrease because backlogged users will be more likely to transmit
+# and therefore to collide
