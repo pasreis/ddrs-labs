@@ -50,17 +50,42 @@ calc_throughput = function(n,sigma,p){
 # 𝑁 = 10 and 𝑝 = 0.3, 𝑝 = 0.4, 𝑝 = 0.5, and 𝑝 = 0.6. 
 # How do you explain the evolution of the throughput with these two parameters?
 
-throughputs = c()
+sigmas=logseq(1,1.3,1000)-1
+pvec = c(0.3,0.4,0.5,0.6)
 
-throughputs = c(throughputs,calc_throughput(10,0.1,0.3))
-throughputs = c(throughputs,calc_throughput(10,0.1,0.4))
-throughputs = c(throughputs,calc_throughput(10,0.1,0.5))
-throughputs = c(throughputs,calc_throughput(10,0.1,0.6))
+Th03 = c()
+Th03 = c(Th03,calc_throughput(10,0.1,0.3))
+Th03 = c(Th03,calc_throughput(10,0.2,0.3))
+Th03 = c(Th03,calc_throughput(10,0.3,0.3))
+Th03 = c(Th03,calc_throughput(10,0.4,0.3))
 
-pvec = c(0.3,0.4,0.5,0.6);
+Th04 = c()
+Th04 = c(Th04,calc_throughput(10,0.1,0.4))
+Th04 = c(Th04,calc_throughput(10,0.2,0.4))
+Th04 = c(Th04,calc_throughput(10,0.3,0.4))
+Th04 = c(Th04,calc_throughput(10,0.4,0.4))
 
-plot(pvec, throughputs, main="Theoretical Throughput as a Function of p:\n
-        N=10, sigma=0.1", xlab="p", ylab="throughput", type="o")
+Th05 = c()
+Th05 = c(Th05,calc_throughput(10,0.1,0.5))
+Th05 = c(Th05,calc_throughput(10,0.2,0.5))
+Th05 = c(Th05,calc_throughput(10,0.3,0.5))
+Th05 = c(Th05,calc_throughput(10,0.4,0.5))
+
+Th06 = c()
+Th06 = c(Th06,calc_throughput(10,0.1,0.6))
+Th06 = c(Th06,calc_throughput(10,0.2,0.6))
+Th06 = c(Th06,calc_throughput(10,0.3,0.6))
+Th06 = c(Th06,calc_throughput(10,0.4,0.6))
+
+
+df=data.frame(x=sigmas,y=c(Th03,Th04,Th05,Th06),p=c(rep("0.3" ,s_size),rep("0.4",s_size),rep("0.5",s_size),rep("0.6",s_size)))
+g=ggplot(df,aes(x=x,y=y,color=p)) + geom_line()
+g1=g + scale_x_log10() + xlab("sigma") + ylab("Throughput")
+
+plot(g1)
+
+#plot(pvec, throughputs, main="Theoretical Throughput as a Function of p:\n
+#        N=10, sigma=0.1", xlab="p", ylab="throughput", type="o")
 
 # throughput should decrease because backlogged users will be more likely to transmit
 # and therefore to collide
