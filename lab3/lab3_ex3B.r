@@ -50,7 +50,8 @@ calc_throughput = function(n,sigma,p){
 # 𝑁 = 10 and 𝑝 = 0.3, 𝑝 = 0.4, 𝑝 = 0.5, and 𝑝 = 0.6. 
 # How do you explain the evolution of the throughput with these two parameters?
 
-sigmas=logseq(1,1.3,1000)-1
+sigmas=logspace
+(1,1.3,n=1000)-1
 pvec = c(0.3,0.4,0.5,0.6)
 
 Th03 = c()
