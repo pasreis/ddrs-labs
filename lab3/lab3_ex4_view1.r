@@ -25,21 +25,56 @@ for (i in (1:3)) {
 		}
 	}
 }
+
 print(P)
 print(lambdas)
 # Define initial state
 state <- round(runif(1, min=1, max=3), digits=0)
 next_jump <- Inf
 
-for (k in (0:N)) {
-	next_jump <- dexp(1, sum(lambdas[state,]))
+#VIEW 1
+# generate vi for every state, then transition based on the probability
+
+transactions <- matrix(0, nrow=3, ncol=3)
+tot_time = rep(0,3)
+previous_jump = 0
+
+for (i in (0:N)) {
+	next_jump <- rexp(1, sum(lambdas[state,]))
+	#the jump rate is the sum of all the lambdas outgoing from the current state
+	tot_time[state] = tot_time[state] + next_jump - previous_jump
+	previous_jump = next_jump
+
 	if (state == 1) {
-		state <- 1
+		state <- 2
+
 	} else if (state == 2) {
-		next_jump <- dexp(1, sum(lambdas[2,]))
+
 		state <- ifelse(next_jump > 0.5, 1, 3)
+
 	} else if (state == 3) {
-		next_jump <- dexp(1, sum(lambdas[3,]))
+
 		state <- ifelse(next_jump > 0.5, 2, 1)
 	}
+}
+
+tot_time = tot_time / sum(tot_time)
+print(tot_time)
+
+#VIEW 2
+# CALCULATE Ti and move accordingly to min(Ti)
+tot_time = rep(0,3)
+
+T <- rep(0,3)
+
+for (i in (0:N)) {
+
+	for(j in (1:3))
+	{
+		T[j]=ifelse(lambdas[state,j] != 0, rexp(1, P[i,j]), Inf)
+		#how do I calculate vi?                   #P[i,j]*Vi
+	}
+	
+	state <- which.min(T);
+	tot_time[state] = tot_time[state] + T[state]
 }
