@@ -3,6 +3,7 @@ N <- 1000
 
 states <- c(1:3)
 
+# Construct Lamba matrix
 lambdas <- matrix(0, nrow=3, ncol=3)
 lambdas[2,1] <- 1
 lambdas[2,3] <- 1
@@ -28,7 +29,8 @@ for (i in (1:3)) {
 
 print(P)
 print(lambdas)
-# Define initial state
+
+# Define initial state at random
 state <- round(runif(1, min=1, max=3), digits=0)
 next_jump <- Inf
 
@@ -41,7 +43,8 @@ previous_jump = 0
 
 for (i in (0:N)) {
 	next_jump <- rexp(1, sum(lambdas[state,]))
-	#the jump rate is the sum of all the lambdas outgoing from the current state
+	
+	# 1/next_jump is the sojourn time (next_jump is the rate)
 	tot_time[state] = tot_time[state] + next_jump - previous_jump
 	previous_jump = next_jump
 
@@ -50,11 +53,11 @@ for (i in (0:N)) {
 
 	} else if (state == 2) {
 
-		state <- ifelse(next_jump > 0.5, 1, 3)
+		state <- ifelse(next_jump < P[state,1] , 1, 3)
 
 	} else if (state == 3) {
 
-		state <- ifelse(next_jump > 0.5, 2, 1)
+		state <- ifelse(next_jump < P[state,2] , 2, 1)
 	}
 }
 
