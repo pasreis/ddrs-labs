@@ -63,21 +63,3 @@ for (i in (0:N)) {
 
 tot_time = tot_time / sum(tot_time)
 print(tot_time)
-
-#VIEW 2
-# CALCULATE Ti and move accordingly to min(Ti)
-tot_time = rep(0,3)
-
-T <- rep(0,3)
-
-for (i in (0:N)) {
-
-	for(j in (1:3))
-	{
-		T[j]=ifelse(lambdas[state,j] != 0, rexp(1, P[i,j]), Inf)
-		#how do I calculate vi?                   #P[i,j]*Vi
-	}
-	
-	state <- which.min(T);
-	tot_time[state] = tot_time[state] + T[state]
-}
