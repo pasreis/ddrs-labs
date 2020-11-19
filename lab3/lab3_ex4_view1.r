@@ -30,6 +30,8 @@ for (i in (1:3)) {
 # print(P)
 # print(lambdas)
 
+results <- matrix(nrow=3,ncol=3)
+
 
 # ------------------------------------- THEORETICAL --------------------------------------
 # reduced system of equations to calculate theoretical limiting probabilities
@@ -56,7 +58,8 @@ b[1,1] = 1
 
 # P is a 1x3 matrix (vector)
 Pi<-solve(a,b)
-print(paste("Theoretical Limiting Probabilities: ", Pi[1],Pi[2],Pi[3]))
+# print(paste("Theoretical Limiting Probabilities: ", Pi[1],Pi[2],Pi[3]))
+results[3,] = Pi
 
 # ---------------------------------------- VIEW 1 ----------------------------------------
 # generate stationary time for every state, then transition based on the probability
@@ -90,8 +93,9 @@ for (i in (0:N)) {
 }
 
 tot_time = tot_time / sum(tot_time)
-print("                              VIEW1                              ")
-print(paste("Simulated Limiting Probabilities with N=", N, ": ",tot_time[1],tot_time[2],tot_time[3]))
+results[1,] = tot_time
+# print("                              VIEW1                              ")
+# print(paste("Simulated Limiting Probabilities with N=", N, ": ",tot_time[1],tot_time[2],tot_time[3]))
 
 # ---------------------------------------- VIEW 2 ----------------------------------------
 
@@ -119,5 +123,10 @@ for (i in (0:N)) {
 }
 
 tot_time = tot_time / sum(tot_time)
-print("                              VIEW2                              ")
-print(paste("Simulated Limiting Probabilities with N=", N, ": ",tot_time[1],tot_time[2],tot_time[3]))
+results[2,] = tot_time
+# print("                              VIEW2                              ")
+# print(paste("Simulated Limiting Probabilities with N=", N, ": ",tot_time[1],tot_time[2],tot_time[3]))
+print(paste("First Row: Simulated Limiting Probabilities (VIEW1) with N=", N))
+print(paste("Second Row: Simulated Limiting Probabilities (VIEW2) with N=", N))
+print("Third Row: Theoretical Limiting Probabilities")
+print(results)
