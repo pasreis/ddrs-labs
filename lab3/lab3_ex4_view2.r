@@ -31,7 +31,7 @@ print(P)
 print(lambdas)
 
 # Define initial state at random
-state <- round(runif(1, min=1, max=3), digits=0)
+state <- 1
 next_jump <- Inf
 
 #VIEW 2
@@ -44,10 +44,9 @@ for (i in (0:N)) {
 
 	for(j in (1:3))
 	{
-		T[j]=ifelse(lambdas[state,j] != 0, rexp(1, P[i,j]), Inf)
-		#how do I calculate vi?                   #P[i,j]*Vi
+		T[j]=ifelse(lambdas[state,j] != 0, rexp(1, lambda[i,j]), Inf)
 	}
 	
+	tot_time[state] = tot_time[state] + min(T)
 	state <- which.min(T);
-	tot_time[state] = tot_time[state] + T[state]
 }
