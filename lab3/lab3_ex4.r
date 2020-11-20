@@ -1,5 +1,5 @@
 # Constants
-N <- 100000
+N <- 10
 
 states <- c(1:3)
 
