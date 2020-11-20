@@ -7,7 +7,7 @@ schedule_arr <- function(lambda, meth, time) {
 	if (meth == POISSON) {
 		time <- time + rexp(1, lambda)
 	} else if (meth == UNI) {
-		time <- time + runif(1)
+		time <- time + runif(1, min=2, max=4)
 	}
 	time
 }
@@ -33,12 +33,12 @@ simulate <- function(n, lambda, arr_method) {
 			event_list <- c(event_list, time + 1)
 
 			# Schedule next arrival
-			event_list[1] <- schedule_arr(lambda, arr_method, time)
+			event_list <- c(event_list, schedule_arr(lambda, arr_method, time))
 
 			# Count clients in system
-			if (num_clients_in_sys <= 3 && num_clients_in_sys > 0) {
-				a[num_clients_in_sys] <- a[num_clients_in_sys] + 1
-				p[num_clients_in_sys] <- p[num_clients_in_sys] + (time - time_prev_event)
+			if (num_clients_in_sys < 3 && num_clients_in_sys >= 0) {
+				a[num_clients_in_sys + 1] <- a[num_clients_in_sys + 1] + 1
+				p[num_clients_in_sys + 1] <- p[num_clients_in_sys + 1] + (time - time_prev_event)
 			} 
 
 			# Increment clients in system
@@ -46,18 +46,20 @@ simulate <- function(n, lambda, arr_method) {
 
 		} else { # DEPARTURE
 			# Remove departure from event list
-			event_list <- event_list[-next_event_type]
+			event_list <- event_list[-2]
 			
 			# Count clients in system
-			if (num_clients_in_sys <= 3 && num_clients_in_sys > 0) {
-				p[num_clients_in_sys] <- p[num_clients_in_sys] + (time - time_prev_event)
+			if (num_clients_in_sys < 3 && num_clients_in_sys > 0) {
+				p[num_clients_in_sys + 1] <- p[num_clients_in_sys + 1] + (time - time_prev_event)
 			}
 
 			# Decrement clients in system
 			num_clients_in_sys <- num_clients_in_sys - 1
+			
+			# Count clients that traversed the system
+			num_sys_completed <- num_sys_completed + 1
 		}
 
-		num_sys_completed <- num_sys_completed + 1
 		time_prev_event <- time
 	}
 
