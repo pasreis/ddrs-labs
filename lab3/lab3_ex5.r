@@ -39,7 +39,7 @@ simulate <- function(n, lambda, arr_method) {
 			if (num_clients_in_sys <= 3 && num_clients_in_sys > 0) {
 				a[num_clients_in_sys] <- a[num_clients_in_sys] + 1
 				p[num_clients_in_sys] <- p[num_clients_in_sys] + (time - time_prev_event)
-			} 
+			}
 
 			# Increment clients in system
 			num_clients_in_sys <- num_clients_in_sys + 1

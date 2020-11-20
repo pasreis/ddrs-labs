@@ -39,7 +39,7 @@ results <- matrix(nrow=3,ncol=3)
 # Pi1*Lambda12 - Pi2*Lambda21 - Pi3*Lambda31 = 0
 #  - Pi2*Lambda23 + Pi3*(Lambda32 + Lambda31) = 0
 
-# corrisponding indexes matrix for solving the system
+# corresponding indexes matrix for solving the system
 a <- matrix(0, nrow=3, ncol=3);
 a[1,1] = 1
 a[1,2] = 1
