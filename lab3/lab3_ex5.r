@@ -36,10 +36,10 @@ simulate <- function(n, lambda, arr_method) {
 			event_list <- c(event_list, schedule_arr(lambda, arr_method, time))
 
 			# Count clients in system
-			if (num_clients_in_sys < 3 && num_clients_in_sys >= 0) {
-				a[num_clients_in_sys + 1] <- a[num_clients_in_sys + 1] + 1
-				p[num_clients_in_sys + 1] <- p[num_clients_in_sys + 1] + (time - time_prev_event)
-			} 
+			if (num_clients_in_sys <= 3 && num_clients_in_sys > 0) {
+				a[num_clients_in_sys] <- a[num_clients_in_sys] + 1
+				p[num_clients_in_sys] <- p[num_clients_in_sys] + (time - time_prev_event)
+			}
 
 			# Increment clients in system
 			num_clients_in_sys <- num_clients_in_sys + 1

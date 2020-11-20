@@ -1,5 +1,3 @@
-arrival_rate <- 4 # lamda
-service_rate <- 4 # mu
 n <- 1500 # number of clients that traversed the queue
 
 simulate <- function(n, arrival_rate, service_rate) {
