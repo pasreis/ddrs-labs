@@ -1,5 +1,3 @@
-n <- 1500 # number of clients that traversed the queue
-
 simulate <- function(n, arrival_rate, service_rate) {
 	time <- 0
 	num_queue_completed <- 0
@@ -38,14 +36,14 @@ simulate <- function(n, arrival_rate, service_rate) {
 		}
 	}
 	avg_delay <- acum_delay / num_queue_completed
-	theo_avg_delay <- arrival_rate / (service_rate * (service_rate - arrival_rate))
 
-	print(paste("Theoretical Results with lambda =", arrival_rate, "and mu =", service_rate))
-	print(paste("  Average Delay in Queue:", theo_avg_delay))
-
-	print("")
-	print(paste("Average Delay in Queue: ", avg_delay))
+	print(paste("Utilization = ", arrival_rate/service_rate))
+	print(paste("Average Delay in Queue with ",n, " clients: ", avg_delay))
+	
+	delay = arrival_rate/(service_rate*(service_rate-arrival_rate))
+	print(paste("Theoretical = ", delay))
 }
 
-simulate(1000, 2, 2)
-simulate(1000, 4, 2)
+# simulate(10000, 2, 2)
+
+simulate(1000, 4.8, 5)
