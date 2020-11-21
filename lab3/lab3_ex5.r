@@ -14,7 +14,6 @@ schedule_arr <- function(lambda, meth, time) {
 
 simulate <- function(n, lambda, arr_method) {
 	num_clients_in_sys <- 0
-	event_list <- c(Inf, Inf)
 	time <- 0
 	time_prev_event <- 0
 	num_sys_completed <- 0
@@ -22,23 +21,28 @@ simulate <- function(n, lambda, arr_method) {
 	p <- rep(0, 3)
 
 	# Schedule next arrival
-	event_list[1] <- schedule_arr(lambda, arr_method, time)
+	event_list <- c(schedule_arr(lambda, arr_method, time))
 
 	while (num_sys_completed < n) {
-		next_event_type <- which.min(event_list)
-		time <- event_list[next_event_type]
+		if (length(event_list) == 1) { # No departure is scheduled
+			next_event_type <- 1
+		} else { # There is at least one departure scheduled
+			next_event_type <- ifelse(event_list[1] < event_list[2], 1, 2)
+		}
 
+		time <- event_list[next_event_type]
+		
 		if (next_event_type == ARRIVAL) {
 			# Schedule departure
 			event_list <- c(event_list, time + 1)
 
 			# Schedule next arrival
-			event_list <- c(event_list, schedule_arr(lambda, arr_method, time))
+			event_list[1] <- schedule_arr(lambda, arr_method, time)
 
 			# Count clients in system
-			if (num_clients_in_sys <= 3 && num_clients_in_sys > 0) {
-				a[num_clients_in_sys] <- a[num_clients_in_sys] + 1
-				p[num_clients_in_sys] <- p[num_clients_in_sys] + (time - time_prev_event)
+			if (num_clients_in_sys < 3 && num_clients_in_sys >= 0) {
+				a[num_clients_in_sys + 1] <- a[num_clients_in_sys + 1] + 1
+				p[num_clients_in_sys + 1] <- p[num_clients_in_sys + 1] + (time - time_prev_event)
 			}
 
 			# Increment clients in system
@@ -49,7 +53,7 @@ simulate <- function(n, lambda, arr_method) {
 			event_list <- event_list[-2]
 			
 			# Count clients in system
-			if (num_clients_in_sys < 3 && num_clients_in_sys > 0) {
+			if (num_clients_in_sys < 3 && num_clients_in_sys >= 0) {
 				p[num_clients_in_sys + 1] <- p[num_clients_in_sys + 1] + (time - time_prev_event)
 			}
 
@@ -59,7 +63,6 @@ simulate <- function(n, lambda, arr_method) {
 			# Count clients that traversed the system
 			num_sys_completed <- num_sys_completed + 1
 		}
-
 		time_prev_event <- time
 	}
 
@@ -76,10 +79,10 @@ simulate <- function(n, lambda, arr_method) {
 		print(paste("    ", i - 1, "clients in the system:", a[i]))
 	}
 	
-	print("Limiting state probabilitie of having:")	
+	print("Limiting state probability of having:")	
 	for (i in (1:3)) {
 		p[i] <- p[i] / time
-		print(paste("    ", i - 1, "clients in the system:", a[i]))
+		print(paste("    ", i - 1, "clients in the system:", p[i]))
 	}
 }
 
