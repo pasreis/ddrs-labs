@@ -74,8 +74,9 @@ cacl_sim_throughput <- function(n, simga, p) {
 			num_thinking <- num_thinking + 1
 			num_backlog <- num_backlog - 1
 			num_suc_trans <- num_suc_trans + 1
-		} else { #if (num_trans_thinking >= 0 && num_trans_backlog >= 0) {
-			# 1 or more thinking user collided with 1 or more backlogged users
+		} else { #if (num_trans_thinking + num_trans_backlog > 1) {
+			# some users collided: the thinking that tried to transmit go into backlog state
+			# and the backlogged stay backlogged
 			num_thinking <- num_thinking - num_trans_thinking
 			num_backlog <- num_backlog + num_trans_thinking
 		}
