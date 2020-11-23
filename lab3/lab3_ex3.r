@@ -53,7 +53,7 @@ calc_theo_throughput <- function(n, sigma, p) {
 	theo_throughput
 }
 
-cacl_sim_throughput <- function(n, simga, p) {
+calc_sim_throughput <- function(n, simga, p) {
 	total_slots <- 10000
 	clients <- rep(THINKING, n)
 	transmissions <- rep(0, n)
@@ -107,4 +107,4 @@ g1 <- g + scale_x_log10() + xlab("sigma") + ylab("Throughput")
 print(g1)
 
 calc_theo_throughput(n, 0.01, p)
-cacl_sim_throughput(n , 0.01, p)
+calc_sim_throughput(n, 0.01, p)
