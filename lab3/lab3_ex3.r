@@ -86,25 +86,26 @@ calc_sim_throughput <- function(n, simga, p) {
 	print(paste("Simulated Throughput =", throughput))
 	throughput
 }
-
-make_ThX <- function(n, sigmas, p) {
-	ThX <- c()
-
-	for (sigma in sigmas) {
-		ThX <- c(ThX, cacl_sim_throughput(n, sigma, p))
-	}
-	ThX
-}
-
-Th03 <- make_ThX(10, sigmas, 0.3)
-Th04 <- make_ThX(10, sigmas, 0.4)
-Th05 <- make_ThX(10, sigmas, 0.5)
-Th06 <- make_ThX(10, sigmas, 0.6)
-
-df <- data.frame(x=sigmas, y=c(Th03, Th04, Th05, Th06), p=c(rep("0.3", s_size), rep("0.4", s_size), rep("0.5", s_size), rep("0.6", s_size)))
-g <- ggplot(df, aes(x=x, y=y, color=p)) + geom_line()
-g1 <- g + scale_x_log10() + xlab("sigma") + ylab("Throughput")
-print(g1)
-
 calc_theo_throughput(n, 0.01, p)
 calc_sim_throughput(n, 0.01, p)
+
+#---------------GRAPH---------------
+
+# make_ThX <- function(n, sigmas, p) {
+# 	ThX <- c()
+
+# 	for (sigma in sigmas) {
+# 		ThX <- c(ThX, calc_sim_throughput(n, sigma, p))
+# 	}
+# 	ThX
+# }
+
+# Th03 <- make_ThX(10, sigmas, 0.3)
+# Th04 <- make_ThX(10, sigmas, 0.4)
+# Th05 <- make_ThX(10, sigmas, 0.5)
+# Th06 <- make_ThX(10, sigmas, 0.6)
+
+# df <- data.frame(x=sigmas, y=c(Th03, Th04, Th05, Th06), p=c(rep("0.3", s_size), rep("0.4", s_size), rep("0.5", s_size), rep("0.6", s_size)))
+# g <- ggplot(df, aes(x=x, y=y, color=p)) + geom_line()
+# g1 <- g + scale_x_log10() + xlab("sigma") + ylab("Throughput")
+# print(g1)
