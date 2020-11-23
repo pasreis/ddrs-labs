@@ -5,7 +5,7 @@ library(pracma)
 # constants
 THINKING <- 0
 BACKLOGGED <- 1
-s_size <- 1000 
+s_size <- 1000
 
 #sigma <- 0.1
 sigmas <- logseq(1, 1.3, s_size) - 1
@@ -62,7 +62,7 @@ cacl_sim_throughput <- function(n, simga, p) {
 	num_backlog <- 0
 
 	for (i in (0:total_slots)) {
-		num_trans_thinking <- rbinom(1, num_thinking, prob=sigma)
+		num_trans_thinking <- rbinom(1, num_thinking, prob=simga)
 		num_trans_backlog <- rbinom(1, num_backlog, prob=p)
 		
 		
@@ -82,7 +82,7 @@ cacl_sim_throughput <- function(n, simga, p) {
 	}
 
 	throughput <- num_suc_trans / total_slots
-	#print(paste("Simulated Throughput =", throughput))
+	print(paste("Simulated Throughput =", throughput))
 	throughput
 }
 
@@ -105,5 +105,5 @@ g <- ggplot(df, aes(x=x, y=y, color=p)) + geom_line()
 g1 <- g + scale_x_log10() + xlab("sigma") + ylab("Throughput")
 print(g1)
 
-calc_theo_throughput(n, sigma, p)
-cacl_sim_throughput(n , sigma, p)
+calc_theo_throughput(n, 0.01, p)
+cacl_sim_throughput(n , 0.01, p)
