@@ -1,4 +1,7 @@
 # Libraries install.package("lib-name")
+
+# ------------------------------ALOHA------------------------------
+
 library(ggplot2)
 library(pracma)
 
@@ -86,8 +89,8 @@ calc_sim_throughput <- function(n, simga, p) {
 	print(paste("Simulated Throughput =", throughput))
 	throughput
 }
-calc_theo_throughput(n, 0.01, p)
-calc_sim_throughput(n, 0.01, p)
+calc_theo_throughput(6, 0.05, 0.3)
+calc_sim_throughput(6, 0.05, 0.3)
 
 #---------------GRAPH---------------
 

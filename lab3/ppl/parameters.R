@@ -13,8 +13,8 @@ parameters = function() {
   # distributed sizes; 2 = Poisson arrivals and fixed sizes. The levels of
   # priority must be consecutive integers starting at 1, where a lower number
   # corresponds to a higher priority.
-  Flows<<-list(list(sourcetype=2,arrivalrate=350,packetsize=64,priority=1),
-               list(sourcetype=2,arrivalrate=350,packetsize=64,priority=2))
+  Flows<<-list(list(sourcetype=1,arrivalrate=350,packetsize=64,priority=1),
+               list(sourcetype=1,arrivalrate=350,packetsize=64,priority=2))
 
   #Definition of the simulation end time, function of the minimum arrival rate
   endTime<<-10000*(1/25)
