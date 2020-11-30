@@ -49,9 +49,9 @@ collect_input <- function() {
 			}
 		}
 		
-		avg_pkg_len <- strtoi(readline(prompt=paste("Flow", i, "average packet length (bits): ")))
+		avg_pkt_len <- strtoi(readline(prompt=paste("Flow", i, "average packet length (bits): ")))
 		arr_rate <- strtoi(readline(prompt=paste("Flow", i, "arrival rate (packets/s): ")))
-		flows[[i]] <<- c(list(path), avg_pkg_len, arr_rate)
+		flows[[i]] <<- c(list(path), avg_pkt_len, arr_rate)
 	}
 }
 
@@ -59,27 +59,12 @@ get_path <- function(flow_id) {
 	flows[[flow_id]][[1]]
 }
 
-get_avg_pkg_len <- function(flow_id) {
+get_avg_pkt_len <- function(flow_id) {
 	flows[[flow_id]][[2]]
 }
 
 get_arr_rate <- function(flow_id) {
 	flows[[flow_id]][[3]]
-}
-
-calc_theo_avg_pkg_delay_in_flow <- function(flow_id) {
-	path <- get_path(flow_id)
-	len_path <- length(path)
-	i <- 1
-	j <- i + 1
-	sum <- 0
-
-	while (j <= len_path) {
-		sum <- sum + (1 / ((network[i,j] / get_avg_pkg_len(flow_id)) - get_arr_rate(flow_id)))
-		i <- i + 1
-		j <- i + 1
-	}
-	sum
 }
 
 get_all_flows_in_link <- function(i, j) {
@@ -97,7 +82,35 @@ get_all_flows_in_link <- function(i, j) {
 	res
 }
 
-calc_avg_pkgs_in_sys <- function() {
+calc_theo_avg_pkt_delay_in_flow <- function(flow_id) {
+	path <- get_path(flow_id)
+	len_path <- length(path)
+	i <- 1
+	j <- i + 1
+	sum <- 0
+
+	while (j <= len_path) {
+		flows_in_link <- get_all_flows_in_link(path[i], path[j])
+		lambda <- 0
+
+		for (flow_in_link in flows_in_link) {
+			lambda <- lambda + get_arr_rate(flow_in_link)
+		}
+
+		avg_pkt_len_in_link <- 0
+
+		for (flow_in_link in flows_in_link) {
+			avg_pkt_len_in_link <- avg_pkt_len_in_link + get_avg_pkt_len(flow_in_link)
+		}
+		
+		sum <- sum + (1 / ((network[path[i], path[j]] / get_avg_pkt_len(flow_id)) - lambda))
+		i <- i + 1
+		j <- i + 1
+	}
+	sum
+}
+
+calc_avg_pkts_in_sys <- function() {
 	res <- 0
 	for (i in 1:num_nodes) {
 		for (j in 1:num_nodes) {
@@ -109,20 +122,21 @@ calc_avg_pkgs_in_sys <- function() {
 					lambda <- lambda + get_arr_rate(flow_in_link)
 				}
 
-				avg_pkg_len_in_link <- 0
+				avg_pkt_len_in_link <- 0
 
 				for (flow_in_link in flows_in_link) {
-					avg_pkg_len_in_link <- avg_pkg_len_in_link + get_avg_pkg_len(flow_in_link)
+					avg_pkt_len_in_link <- avg_pkt_len_in_link + get_avg_pkt_len(flow_in_link)
 				}
 
-				res <- res + (lambda / ((network[i,j] / avg_pkg_len_in_link) - lambda))
+				avg_pkt_len_in_link <- avg_pkt_len_in_link / length(flows_in_link)
+				res <- res + (lambda / ((network[i,j] / avg_pkt_len_in_link) - lambda))
 			}
 		}
 	}
 	res
 }
 
-calc_theo_avg_pkg_delay_in_sys <- function(L) {
+calc_theo_avg_pkt_delay_in_sys <- function(L) {
 	lambda <- 0
 
 	for (i in 1:num_flows) {
@@ -133,9 +147,9 @@ calc_theo_avg_pkg_delay_in_sys <- function(L) {
 }
 
 collect_input()
-avg_pkg_delay <- calc_theo_avg_pkg_delay_in_flow(1)
-avg_pkg_in_sys <- calc_avg_pkgs_in_sys()
-avg_delay_in_sys <- calc_theo_avg_pkg_delay_in_sys(avg_pkg_in_sys)
+avg_pkt_delay <- calc_theo_avg_pkt_delay_in_flow(1)
+avg_pkt_in_sys <- calc_avg_pkts_in_sys()
+avg_delay_in_sys <- calc_theo_avg_pkt_delay_in_sys(avg_pkt_in_sys)
 
 print("")
 print("Network topology (matrix form):")
@@ -143,9 +157,9 @@ print(network)
 print("")
 
 for (i in 1:num_flows) {
-	print(paste("Average packet delay in flow ", i , "=", avg_pkg_delay, "sec."))
+	print(paste("Average packet delay in flow ", i , "=", calc_theo_avg_pkt_delay_in_flow(i), "sec."))
 }
 
-print(paste("Average number of packets in the system =", avg_pkg_in_sys, "packets"))
+print(paste("Average number of packets in the system =", avg_pkt_in_sys, "packets"))
 print(paste("Average delay in system =", avg_delay_in_sys, "sec."))
  
