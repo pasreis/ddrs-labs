@@ -1,15 +1,15 @@
 # CONSTANTS
 
 # PARAMETERS
-arrivalRate = c(4,5)
-avgPacketSize = c(500, 170)
+arrivalRate = c(250,250)
+avgPacketSize = c(500, 100)
 quantum = c(1000,2000)
 n = 100
-capacity=4000
+capacity=30000
 
 # VARIABLES
-EventList <- rep(Inf, 3)
-packets = 0
+EventList <- c(rexp(1,arrivalRate[1]),rexp(1,arrivalRate[2]), Inf)
+packets = 2
 activeQueue = 1
 queue = list(c(),c())
 queueCount = rep(0,2)
@@ -19,10 +19,6 @@ time = 0
 # STATISTICAL COUNTERS
 deficit = c(quantum[1],0)
 totTransmitted = rep(0,2)
-
-EventList[1] = rexp(1,arrivalRate[1])
-EventList[2] = rexp(1,arrivalRate[2])
-packets = packets + 2
 
 switchQueue = function() {
     activeQueue <<- ifelse(activeQueue == 1, 2, 1)
@@ -187,3 +183,8 @@ while(packets < n){
     }
 }
 
+
+print(paste("Tot transmitted from Queue 1:",totTransmitted[1]))
+print(paste("Tot transmitted from Queue 2:",totTransmitted[2]))
+print(paste("Throughput of Queue 1:",totTransmitted[1]/sum(totTransmitted)))
+print(paste("Throughput of Queue 2:",totTransmitted[2]/sum(totTransmitted)))

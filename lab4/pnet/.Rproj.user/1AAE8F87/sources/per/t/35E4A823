@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1574946829387.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2600755358",
+    "id" : "35E4A823",
+    "lastKnownWriteTime" : 1575022211,
+    "last_content_update" : 1575022211057,
+    "path" : "C:/Users/ruiva/Google Drive/ddrs book/DDRS book Krantz/Chapters/qnets/R/pnet/init.R",
+    "project_path" : "init.R",
+    "properties" : {
+        "cursorPosition" : "5,20",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

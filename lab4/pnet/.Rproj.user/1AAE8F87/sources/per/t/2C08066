@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1574946872040.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3688479501",
+    "id" : "2C08066",
+    "lastKnownWriteTime" : 1575021909,
+    "last_content_update" : 1575021909634,
+    "path" : "C:/Users/ruiva/Google Drive/ddrs book/DDRS book Krantz/Chapters/qnets/R/pnet/arrivals.R",
+    "project_path" : "arrivals.R",
+    "properties" : {
+        "cursorPosition" : "2,32",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}
