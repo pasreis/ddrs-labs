@@ -10,7 +10,7 @@ collect_input <- function() {
 		print("Add new link to network (leave empty to exit):")
 		src <- strtoi(readline(prompt="from: "))
 		dst <- strtoi(readline(prompt="to: "))
-		cap <- strtoi(readline(prompt="capacity (bits/s): "))
+		cap <- as.numeric(readline(prompt="capacity (bits/s): "))
 
 		if (src > 0 && src <= num_nodes && dst > 0 && dst <= num_nodes) {
 			network[src, dst] <<- cap
@@ -49,8 +49,8 @@ collect_input <- function() {
 			}
 		}
 		
-		avg_pkt_len <- strtoi(readline(prompt=paste("Flow", i, "average packet length (bits): ")))
-		arr_rate <- strtoi(readline(prompt=paste("Flow", i, "arrival rate (packets/s): ")))
+		avg_pkt_len <- as.numeric(readline(prompt=paste("Flow", i, "average packet length (bits): ")))
+		arr_rate <- as.numeric(readline(prompt=paste("Flow", i, "arrival rate (packets/s): ")))
 		flows[[i]] <<- c(list(path), avg_pkt_len, arr_rate)
 	}
 }
