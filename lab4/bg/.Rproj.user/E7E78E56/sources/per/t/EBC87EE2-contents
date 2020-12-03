@@ -1,0 +1,108 @@
+bg = function() {
+
+#We assume here that NetworkTopology is an incidence matrix, LinkCapacities is a
+#matrix of link capacities, and Flows is a matrix where each row is a flow
+#identified by origin node, destination node, and rate.
+
+parameters() #Calls parameters routine
+
+NumNodes=ncol(NetworkTopology)
+NumFlows=nrow(Flows)
+
+Delta=0.05
+
+#MaxError1=0.001
+#MaxError2=0.001
+
+LinkRates=matrix(rep(0,NumNodes^2),nrow=NumNodes) #Initializes LinkRates matrix with all zeros
+
+IncrementalDelays=1/LinkCapacities #Initial incremental delay with all link rates equal to zero
+
+Paths=rep(list(list()),NumFlows)
+
+#Determine shortest path of each flow and assign flow to links
+for (i in 1:NumFlows) { 
+  Origin=Flows[i,1] #Origin of flow
+  Destination=Flows[i,2] #Destination of flow
+  Rate=Flows[i,3] #Rate of flow
+  Route=shortestpath(IncrementalDelays,Origin,Destination) #Shortest path of flow
+  PathIncrementalDelay=0
+  for (j in 1:length(Route)-1) { #Assigns the rate of the flow to each link in its route
+    LinkOrigin=Route[j]
+    LinkDestination=Route[j+1]
+    LinkRates[LinkOrigin,LinkDestination]=LinkRates[LinkOrigin,LinkDestination]+Rate
+    PathIncrementalDelay=PathIncrementalDelay+IncrementalDelays[LinkOrigin,LinkDestination]
+  }
+  Paths[[i]]=list(Paths[[i]],list(Route,PathIncrementalDelay))
+}  
+
+#Checks if route is already assotiated with flow
+for (k in 1:length(Paths[[i]])) {
+  if (all.equal(Route,Paths[[i]][[k]][[1]])) {
+    Paths[[i]][[k]][[2]]=PathIncrementalDelay
+    break
+  } else {
+    Paths[[i]]=list(Paths[[i]],list(Route,PathIncrementalDelay))
+  }
+
+    
+    
+MaxUtilization=max(LinkRates/LinkCapacities,na.rm=TRUE) #Calculates maximum link load (ignoring NaN)
+
+#Deviates the flows in the augmented network
+while (MaxUtilization>=1) { #While there is at least one link overloaded
+  CapacityAdjustFactor=(1+Delta)*MaxUtilization #Capacity adjust factor
+  AdjustedLinkCapacities=CapacityAdjustFactor*LinkCapacities #Adjusted link capacities
+  IncrementalDelays=AdjustedLinkCapacities/(AdjustedLinkCapacities-LinkRates)^2 #Incremental delays based on adjusted link capacities
+  NewLinkRates=matrix(rep(0,NumNodes^2),nrow=NumNodes)
+  #Determine shortest path of each flow and assign flow to links
+  for (i in 1:NumFlows) { 
+    Origin=Flows[i,1]
+    Destination=Flows[i,2]
+    Rate=Flows[i,3]
+    Route=shortestpath(IncrementalDelays,Origin,Destination)
+    for (j in 1:length(Route)-1) {
+      LinkOrigin=Route[j]
+      LinkDestination=Route[j+1]
+      NewLinkRates[LinkOrigin,LinkDestination]=NewLinkRates[LinkOrigin,LinkDestination]+Rate;
+    }
+  }
+  #Determines the deviation that leads to the minimum mean number of packets;
+  #this deviation is alpha
+  LinkRates = minlinkrates(MaxError2,AdjustedLinkCapacities,LinkRates,NewLinkRates)
+  MaxUtilization=max(LinkRates/LinkCapacities,na.rm=TRUE)
+}
+
+#Same as before but with the actual link capacities
+Error1=0
+PreviousTotalMeanPackets=Inf
+niter=0
+while (Error1<(1-MaxError1)) {
+  IncrementalDelays=LinkCapacities/(LinkCapacities-LinkRates)^2 #Calculate incremental delays based on adjusted link rates
+  NewLinkRates=matrix(rep(0,NumNodes^2),nrow=NumNodes)
+  for (i in 1:NumFlows) { #Determine shortest path routes of flows and updates link rates 
+    Origin=Flows[i,1]
+    Destination=Flows[i,2]
+    Rate=Flows[i,3]
+    Route=shortestpath(IncrementalDelays,Origin,Destination)
+    for (j in 1:length(Route)-1) {
+      LinkOrigin=Route[j]
+      LinkDestination=Route[j+1]
+      NewLinkRates[LinkOrigin,LinkDestination]=NewLinkRates[LinkOrigin,LinkDestination]+Rate
+    }
+  }
+  LinkRates = minlinkrates(MaxError2,LinkCapacities,LinkRates,NewLinkRates)
+  LinkMeanPackets=LinkRates/(LinkCapacities-LinkRates)
+  LinkMeanPackets[which(is.nan(LinkMeanPackets))]=0
+  TotalMeanPackets=sum(LinkMeanPackets)
+  Error1=TotalMeanPackets/PreviousTotalMeanPackets
+  PreviousTotalMeanPackets=TotalMeanPackets
+  MaxUtilization=max(LinkRates/LinkCapacities)
+  niter=niter+1
+}
+
+print(LinkRates)
+print(TotalMeanPackets)
+print(niter)
+
+}

@@ -20,6 +20,6 @@ parameters <- function() {
                list(rate=128,packetsize=1000,route=c(4)))
 
   #Define here the simulation end time, function of the minimum rate
-  endTime<<-10000*(1/5000)
+  endTime<<-10000*(1/64)
 
 }

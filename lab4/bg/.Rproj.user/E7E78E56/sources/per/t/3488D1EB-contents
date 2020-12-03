@@ -1,0 +1,39 @@
+minlinkrates = function(MaxError2,LinkCapacities,LinkRates,NewLinkRates) {
+
+Alpha=c(0, 0.25, 0.5, 0.75, 1) #Initial set of alpha values
+Step=0.25
+Error2=Inf
+PreviousMin=Inf
+while (Step>MaxError2) {
+  NetMeanPacketsVector=rep(0,5)
+  for (i in 1:5) {
+    TempLinkRates=(1-Alpha[i])*LinkRates+Alpha[i]*NewLinkRates #Calculates new link rates based 
+    LinkMeanPackets=TempLinkRates/(LinkCapacities-TempLinkRates) #Calculates mean number of packets in each link
+    LinkMeanPackets[which(is.nan(LinkMeanPackets))]=0 #Sets to zero mean number of packets that are not a number (Why is this possible?) 
+    if (sum(LinkMeanPackets<0)==0) { #If all mean number of packets are non-negative
+      NetMeanPacketsVector[i]=sum(LinkMeanPackets) #Calculate total mean number of packets
+    } else {
+      NetMeanPacketsVector[i]=Inf
+    }
+  }
+  #print(NetMeanPacketsVector)
+  CurrentMin=min(NetMeanPacketsVector)
+  MinIndex=which.min(NetMeanPacketsVector)
+  #print(MinIndex)
+  AlphaMin=Alpha[MinIndex] #Determines alpha value where minimum ocurred
+  if (MinIndex==1) { #Determines new alpha vector
+    Step=Step/4
+    Alpha=c(AlphaMin,AlphaMin+Step,AlphaMin+2*Step,AlphaMin+3*Step,AlphaMin+4*Step)
+  } else if (MinIndex==5) {
+    Step=Step/4
+    Alpha=c(AlphaMin-4*Step,AlphaMin-3*Step,AlphaMin-2*Step,AlphaMin-Step,AlphaMin)
+  } else {
+    Step=Step/2
+    Alpha=c(AlphaMin-2*Step,AlphaMin-Step,AlphaMin,AlphaMin+Step,AlphaMin+2*Step)  
+  }
+}
+LinkRates=(1-AlphaMin)*LinkRates+AlphaMin*NewLinkRates
+
+return(LinkRates)
+
+}

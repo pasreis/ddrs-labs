@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572731939888.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4035450096",
+    "id" : "592FE298",
+    "lastKnownWriteTime" : 1572732006,
+    "last_content_update" : 1572732006279,
+    "path" : "C:/Users/ruiva/Google Drive/ddrs book/DDRS book Krantz/Chapters/qnets/R/cnet/cnet.R",
+    "project_path" : "cnet.R",
+    "properties" : {
+        "cursorPosition" : "26,0",
+        "scrollLine" : "20",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
