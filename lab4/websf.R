@@ -2,29 +2,11 @@
 
 require(extraDistr)
 
-# 1.5 , 1
-# rho close to 0: ArrivalRate = 1.5 and ServiceRate =  150
-# rho close to 1: ArrivalRate = 99  and ServiceRate = 100
 numServers=2
-ArrivalRate=0.25
+ArrivalRate=1.5
 ServiceRate<<-1
 
-
-rescheduleDepartures = function(thisServer,numJobsBefore,numJobsAfter) {
-  for (i in 1:nrow(Departures)) {
-    ElapsedTime=Time-TimePrevious[thisServer]
-    if (Departures[i,4]==thisServer) {
-      PreviousServicedUnits=Departures[i,3]
-      LastServicedUnits=ElapsedTime*ServiceRate/numJobsBefore
-      RemainingServiceUnits=PreviousServicedUnits-LastServicedUnits
-      Departures[i,3]<<-RemainingServiceUnits
-      Departures[i,1]<<-Time+RemainingServiceUnits*numJobsAfter/ServiceRate
-    }
-  }
-  TimePrevious[thisServer]<<-Time
-}
-
-#Random task assig  nment policy
+#Random task assignment policy
 Time<<-0
 nextArrivalTime=rexp(1,rate=ArrivalRate)
 #Departures is a matrix of departure events where each row is an event and each
@@ -120,3 +102,17 @@ TrueAvgDelay=(numServers/ArrivalRate)*(ro/(1-ro))
 cat(sprintf("Estimated average delay of random assignment policy= %f",AvgDelayRandom),"\n")
 cat(sprintf("Estimated average delay of JSQ assignment policy= %f",AvgDelayJSQ),"\n")
 cat(sprintf("True average delay of random assignment policy= %f",TrueAvgDelay))
+
+rescheduleDepartures = function(thisServer,numJobsBefore,numJobsAfter) {
+  for (i in 1:nrow(Departures)) {
+    ElapsedTime=Time-TimePrevious[thisServer]
+    if (Departures[i,4]==thisServer) {
+      PreviousServicedUnits=Departures[i,3]
+      LastServicedUnits=ElapsedTime*ServiceRate/numJobsBefore
+      RemainingServiceUnits=PreviousServicedUnits-LastServicedUnits
+      Departures[i,3]<<-RemainingServiceUnits
+      Departures[i,1]<<-Time+RemainingServiceUnits*numJobsAfter/ServiceRate
+    }
+  }
+  TimePrevious[thisServer]<<-Time
+}

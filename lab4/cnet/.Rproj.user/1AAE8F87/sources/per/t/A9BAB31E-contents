@@ -1,0 +1,18 @@
+#This is the function where the user defines the simulation scenario
+
+parameters = function() {
+  
+  #Links must be identified by contiguous integers starting at 1
+  
+  #Define here the capacity of each link
+  LinkCapacities<<-c(2,2,2) #In bits/sec
+  
+  # Define here the flows. Flows is a list of lists that stores in each list the
+  # call duration, call arrival rate, call bandwidth and the route of each flow
+  Flows<<-list(list(duration=3,rate=1,bwd=1,route=c(1,3)),
+               list(duration=3,rate=1,bwd=1,route=c(2,3)))
+  
+  #Definition of the simulation end time, function of the minimum arrival rate
+  endTime<<-10000*1
+  
+}

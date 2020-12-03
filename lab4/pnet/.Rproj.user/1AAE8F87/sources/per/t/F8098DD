@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1575020765214.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "884234624",
+    "id" : "F8098DD",
+    "lastKnownWriteTime" : 1575021916,
+    "last_content_update" : 1575021916432,
+    "path" : "C:/Users/ruiva/Google Drive/ddrs book/DDRS book Krantz/Chapters/qnets/R/pnet/timing.R",
+    "project_path" : "timing.R",
+    "properties" : {
+        "cursorPosition" : "2,33",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 4,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

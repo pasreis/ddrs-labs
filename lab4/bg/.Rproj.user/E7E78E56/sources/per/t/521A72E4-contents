@@ -1,0 +1,31 @@
+parameters = function() {
+
+#Define here the network topology. Rows correspond to origin nodes and columns
+#to destination nodes. Element(i,j) equals 1 if there is a link from node i to
+#node j.
+
+NetworkTopology<<-matrix(c(0, 1, 1,
+                           1, 0, 1,
+                           1, 1 ,0),
+                         nrow=3,
+                         ncol=3,
+                         byrow=TRUE)
+
+#Define here the capacity of each link, in bits/sec
+
+LinkCapacities<<-matrix(c(0, 2, 2,
+                          2, 0, 2,
+                          2, 2, 0),
+                        nrow=3,
+                        ncol=3,
+                        byrow=TRUE)
+}
+#Define here the flows. Flows is a matrix where each row corresponds to a
+#different flow, columns correspond to origin node, destination node, and
+#offered rate
+
+Flows<<-matrix(c(1, 2, 2,
+                 2, 3, 3),
+               nrow=2,
+               ncol=3,
+               byrow=TRUE)

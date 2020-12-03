@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544002855578.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1370012049",
+    "id" : "EBC87EE2",
+    "lastKnownWriteTime" : 1544048298,
+    "last_content_update" : 1544048298577,
+    "path" : "C:/Users/ruiva/OneDrive - Universidade de Lisboa/Rexperiments/bg/bg.R",
+    "project_path" : "bg.R",
+    "properties" : {
+        "cursorPosition" : "46,0",
+        "scrollLine" : "34"
+    },
+    "relative_order" : 1,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}
