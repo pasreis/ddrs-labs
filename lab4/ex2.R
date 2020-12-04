@@ -50,10 +50,11 @@ transmitPacket = function() {
 
 
 while(packets < n){
+
     nextEvent = which.min(EventList)
     print(EventList)
     print(paste("Next event = ", nextEvent))
-    time = time + min(EventList)
+    time = min(EventList)
 
     if(nextEvent != 3){
         
