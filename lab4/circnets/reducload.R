@@ -1,7 +1,7 @@
 #Determines the flow blocking probabilities of a circuit switched network using
 #the reduced load approximation. It uses the method of repeated substitutions
 #(Keith Ross book, page 184)
-
+setwd("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/circnets")
 source("erlB.R")
 
 ##############################################################################
