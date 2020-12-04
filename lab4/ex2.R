@@ -3,7 +3,7 @@
 # PARAMETERS
 arrivalRate = c(250,250)
 avgPacketSize = c(500, 100)
-quantum = c(1000,2000)
+quantum = c(1000,200)
 n = 100
 capacity=30000
 
