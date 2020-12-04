@@ -81,10 +81,8 @@ get_arr_rate <- function(flow_id) {
 get_all_flows_in_link <- function(link) {
 	res <- c()
 	for (flow in Flows) {
-		for (l in flow[["route"]]) {
-			if (l == link) {
-				res <- c(res, flow)
-			}
+		if (is.element(link, flow[["route"]])) {
+			res <- c(res, flow)
 		}
 	}
 	res
