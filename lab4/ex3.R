@@ -1,12 +1,14 @@
 paramters <- function() {  
 	#Define here the capacity of each link
-  LinkCapacities<<-c(64e3,64e3) #In bits/sec
+	LinkCapacities<<-c(100e6,100e6,200e6) #In bits/sec
 
 	#Define here the flows. Flows is a list of lists that stores in each list the
 	#arrival rate (in packets/second), the mean packet length (in bits) and the
 	#route of each flow; the routes must be defined using the link identifiers
 	#(and not the node identifiers)
-	Flows<<-list(list(rate=32,packetsize=1000,route=c(1,2)))
+	Flows<<-list(list(rate=7.5e3,packetsize=8000,route=c(1,3)),
+				 list(rate=10e3,packetsize=8000,route=c(2,3)),
+				 list(rate=5e3,packetsize=8000,route=c(3)))
 }
 
 collect_input <- function() {
@@ -88,12 +90,33 @@ get_all_flows_in_link <- function(link) {
 	res
 }
 
-calc_theo_avg_pkt_delay_in_flow <- function(flow_id) {
+sum_all_flow_rates_in_link <- function(link) {
+	lambda <- 0
+	for (flow in Flows) {
+		if (is.element(link, flow[["route"]])) {
+			lambda <- lambda + flow[["rate"]]
+		}
+	}
+	lambda
+}
+
+avg_pkt_size_in_link <- function(link) {
+	pkt_size <- 0
+	sum <- 0
+	for (flow in Flows) {
+		if (is.element(link, flow[["route"]])) {
+			pkt_size <- pkt_size + flow[["packetsize"]]
+			sum <- sum + 1
+		}
+	}
+	pkt_size / sum
+}
+
+calc_avg_pkt_delay_in_flow <- function(flow_id) {
 	sum <- 0
 	for (link in Flows[[flow_id]][["route"]]) {
 		flows_in_link <- get_all_flows_in_link(link)
-		lambda <- 0
-		lambda <- sum(flows_in_link[["rate"]])
+		lambda <- sum_all_flow_rates_in_link(link)
 		sum <- sum + (1 / ((LinkCapacities[link] / Flows[[flow_id]][["packetsize"]]) - lambda))
 	}
 	sum
@@ -101,56 +124,34 @@ calc_theo_avg_pkt_delay_in_flow <- function(flow_id) {
 
 calc_avg_pkts_in_sys <- function() {
 	res <- 0
-	for (i in 1:num_nodes) {
-		for (j in 1:num_nodes) {
-			if (network[i,j] != 0) {
-				flows_in_link <- get_all_flows_in_link(i, j)
-				lambda <- 0
-				
-				for (flow_in_link in flows_in_link) {
-					lambda <- lambda + get_arr_rate(flow_in_link)
-				}
+	num_links <- length(LinkCapacities)
 
-				avg_pkt_len_in_link <- 0
-
-				for (flow_in_link in flows_in_link) {
-					avg_pkt_len_in_link <- avg_pkt_len_in_link + get_avg_pkt_len(flow_in_link)
-				}
-
-				avg_pkt_len_in_link <- avg_pkt_len_in_link / length(flows_in_link)
-				res <- res + (lambda / ((network[i,j] / avg_pkt_len_in_link) - lambda))
-			}
-		}
+	for (link in 1:num_links) {
+		lambda <- sum_all_flow_rates_in_link(link)
+		mu <- LinkCapacities[link] / avg_pkt_size_in_link(link)
+		res <- res + (lambda / (mu - lambda))
 	}
 	res
 }
 
-calc_theo_avg_pkt_delay_in_sys <- function(L) {
+calc_avg_pkt_delay_in_sys <- function(L) {
 	lambda <- 0
 
-	for (i in 1:num_flows) {
-		lambda <- lambda + get_arr_rate(i)
+	for (flow in Flows) {
+		lambda <- lambda + flow[["rate"]]
 	}
-
 	L / lambda
 }
 
 #collect_input()
 paramters()
-avg_pkt_delay <- calc_theo_avg_pkt_delay_in_flow(1)
-print(avg_pkt_delay)
-#avg_pkt_in_sys <- calc_avg_pkts_in_sys()
-#avg_delay_in_sys <- calc_theo_avg_pkt_delay_in_sys(avg_pkt_in_sys)
 
-#print("")
-#print("Network topology (matrix form):")
-#print(network)
-#print("")
+for (i in 1:length(Flows)) {
+	print(paste("Average packet delay in flow", i, " = ", calc_avg_pkt_delay_in_flow(i), "sec."))
+}
 
-#for (i in 1:num_flows) {
-#	print(paste("Average packet delay in flow ", i , "=", calc_theo_avg_pkt_delay_in_flow(i), "sec."))
-#}
-
-#print(paste("Average number of packets in the system =", avg_pkt_in_sys, "packets"))
-#print(paste("Average delay in system =", avg_delay_in_sys, "sec."))
+avg_pkts_in_sys <- calc_avg_pkts_in_sys()
+avg_pkt_delay_in_sys <- calc_avg_pkt_delay_in_sys(avg_pkts_in_sys)
+print(paste("Average number of packets in the system =", avg_pkts_in_sys, "packets"))
+print(paste("Average packet delay in the system =", avg_pkt_delay_in_sys, "sec."))
  
