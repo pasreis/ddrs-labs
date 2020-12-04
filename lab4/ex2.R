@@ -1,10 +1,10 @@
 # CONSTANTS
 
 # PARAMETERS
-arrivalRate = c(250,250)
-avgPacketSize = c(500, 100)
-quantum = c(1000,200)
-n = 100
+arrivalRate = c(100,1)
+avgPacketSize = c(10, 10)
+quantum = c(50,50)
+n = 1000
 capacity=30000
 
 # VARIABLES
@@ -39,7 +39,7 @@ transmitPacket = function() {
     " Deficit= ", deficit[activeQueue]," first packet= ",queue[[activeQueue]][1]))
 
     deficit[activeQueue] <<- deficit[activeQueue] - queue[[activeQueue]][1]
-    print(paste("New Deficit = ",deficit[activeQueue]))
+    # print(paste("New Deficit = ",deficit[activeQueue]))
 
     EventList[3] <<- time + queue[[activeQueue]][1] / capacity 
     queue[[activeQueue]] <<- queue[[activeQueue]][-1]
@@ -58,7 +58,7 @@ while(packets < n){
     if(nextEvent != 3){
         
         size = runif(1,min = 0, max = 2*avgPacketSize[nextEvent]) #calculate random size
-        EventList[nextEvent] = rexp(1,arrivalRate[nextEvent]) +time
+        EventList[nextEvent] = time + rexp(1,arrivalRate[nextEvent])
         packets = packets+1
 
         if(queueCount[nextEvent] == 0 && activeQueue == nextEvent 
@@ -109,9 +109,34 @@ while(packets < n){
             }
             
         }
+        else if (queueCount[activeQueue]==0 && nextEvent != activeQueue && transmissionOngoing==FALSE){
+            #if a client arrives on the non active queue when the active queue is empty 
+            #And the channel is free, I can switch and serve it immediately(OPTIMIZATION)
+            print(paste(size, " arrives in queue ", nextEvent, ", the active queue is empty [",queueCount[activeQueue],
+            " and the channel is also empty"))
+            
+            deficit[activeQueue] = 0
+            activeQueue <<- ifelse(activeQueue == 1, 2, 1)
+            deficit[activeQueue] = deficit[activeQueue] + quantum[activeQueue]
+            print(paste("So I'm switching to queue ",activeQueue,"with new deficit: ",deficit[activeQueue]))
+            
+            #particular case when I know that the other queue is empty
+            #so every time I switch twice to go back to the interested queue
+            while(deficit[activeQueue] < size){
+                activeQueue <<- ifelse(activeQueue == 1, 2, 1)
+                deficit[activeQueue] = deficit[activeQueue] + quantum[activeQueue]
+                activeQueue <<- ifelse(activeQueue == 1, 2, 1)
+                deficit[activeQueue] = deficit[activeQueue] + quantum[activeQueue]
+                print(paste("Not enough deficit, new deficit: ",deficit[activeQueue]))
+            }
+            EventList[3] = time + size/capacity
+            transmissionOngoing = TRUE
+            totTransmitted[activeQueue] = totTransmitted[activeQueue] +1
+            print(paste("Now the packet is ready to be transmitted"))
+        }
         else { # any other case put in the queue
-            # other cases include: 
-            # arrival on non active queue, transmission already ongoing, other packets already in queue
+            # other cases include: transmission already ongoing, other packets already in queue
+            # or arrival in a non active queue but with transmission ongoing
             print(paste(size, " arrives in queue ", nextEvent, 
             " QUEUED because activeQueue=",activeQueue, " , transmission: ",transmissionOngoing,
             " remaining deficit: ",deficit[nextEvent]))
@@ -183,7 +208,8 @@ while(packets < n){
     }
 }
 
-
+print(paste("Packets in Queue 1:",queueCount[1]))
+print(paste("Packets in Queue 2:",queueCount[2]))
 print(paste("Tot transmitted from Queue 1:",totTransmitted[1]))
 print(paste("Tot transmitted from Queue 2:",totTransmitted[2]))
 print(paste("Throughput of Queue 1:",totTransmitted[1]/sum(totTransmitted)))

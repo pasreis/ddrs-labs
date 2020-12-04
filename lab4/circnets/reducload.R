@@ -13,7 +13,7 @@ source("erlB.R")
 
 #Define here the capacity of each link. The capacity must be expressed in number
 #of circuits. This assumes that each call occupies one circuit.
-LinkCapacities=c(0,5,13,0,13,5,0,13,5,6) #In number of circuits
+LinkCapacities=c(0,5,13,0,13,7,0,13,0,0) #In number of circuits
 
 #Define here the flows. Flows is a list of lists that stores in each list (1)
 #the offered load and (2) the route of each flow; the routes must be defined
@@ -23,7 +23,7 @@ Flows=list(list(load=1,route=c(5,6)),
            list(load=5,route=c(8)),
            list(load=5,route=c(3)),
            list(load=1,route=c(2,3)),
-           list(load=1,route=c(8,9,10)))
+           list(load=1,route=c(8,6)))
 
 
 #Do not write bellow this line!
