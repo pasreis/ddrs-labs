@@ -11,85 +11,8 @@ paramters <- function() {
 				 list(rate=5e3,packetsize=8000,route=c(3)))
 }
 
-collect_input <- function() {
-	num_nodes <<- strtoi(readline(prompt="Number of nodes in the network: "))
-	network <<- matrix(0, nrow=num_nodes, ncol=num_nodes)
-	
-	max_links <- num_nodes * num_nodes
-	i <- 0
-
-	while (TRUE) {
-		print("Add new link to network (leave empty to exit):")
-		src <- strtoi(readline(prompt="from: "))
-		dst <- strtoi(readline(prompt="to: "))
-		cap <- as.numeric(readline(prompt="capacity (bits/s): "))
-
-		if (src > 0 && src <= num_nodes && dst > 0 && dst <= num_nodes) {
-			network[src, dst] <<- cap
-			print(paste("Added a link from", src, "to", dst, "with capacity", cap, "bits/s"))
-		} else {
-			print("Invalid link, try again!")
-		}
-
-		exit <- readline(prompt="Do you want to add more links? (y/n) ")
-
-		if (exit == "n") {
-			break
-		} else if (exit == "y") {
-			next
-		} else {
-			print("Invalid option")
-			quit(status=1)
-		}
-	}
-
-	num_flows <<- strtoi(readline(prompt="Number of flows: "))
-	flows <<- rep(list(1), num_flows)
-
-	for (i in (1:num_flows)) {
-		print(paste("Create a path for flow", i, "(leave empty to finish)"))
-		path <- c()
-		while (TRUE) {
-			point <- strtoi(readline())
-
-			if (is.na(point)) {
-				break
-			} else if (point > 0 && point <= num_nodes) {
-				path <- c(path, point)
-			} else {
-				print("Invalid path, try again!")
-			}
-		}
-		
-		avg_pkt_len <- as.numeric(readline(prompt=paste("Flow", i, "average packet length (bits): ")))
-		arr_rate <- as.numeric(readline(prompt=paste("Flow", i, "arrival rate (packets/s): ")))
-		flows[[i]] <<- c(list(path), avg_pkt_len, arr_rate)
-	}
-}
-
-get_path <- function(flow_id) {
-	flows[[flow_id]][[1]]
-}
-
-get_avg_pkt_len <- function(flow_id) {
-	flows[[flow_id]][[2]]
-}
-
-get_arr_rate <- function(flow_id) {
-	flows[[flow_id]][[3]]
-}
-
-# Returns a vector with all flows that contain link in their routing
-get_all_flows_in_link <- function(link) {
-	res <- c()
-	for (flow in Flows) {
-		if (is.element(link, flow[["route"]])) {
-			res <- c(res, flow)
-		}
-	}
-	res
-}
-
+# Given a link, the function returns the sum of all arrival rates of all flows
+# that traverse that given link
 sum_all_flow_rates_in_link <- function(link) {
 	lambda <- 0
 	for (flow in Flows) {
@@ -100,6 +23,7 @@ sum_all_flow_rates_in_link <- function(link) {
 	lambda
 }
 
+# Given a link, this function returns the average packet size in that given link
 avg_pkt_size_in_link <- function(link) {
 	pkt_size <- 0
 	sum <- 0
@@ -112,16 +36,18 @@ avg_pkt_size_in_link <- function(link) {
 	pkt_size / sum
 }
 
+# Given a flow (identified by a flow_id, an integer from 1 to the number of flows)
+# this function returns the average packet delay in that flow
 calc_avg_pkt_delay_in_flow <- function(flow_id) {
 	sum <- 0
 	for (link in Flows[[flow_id]][["route"]]) {
-		flows_in_link <- get_all_flows_in_link(link)
 		lambda <- sum_all_flow_rates_in_link(link)
 		sum <- sum + (1 / ((LinkCapacities[link] / Flows[[flow_id]][["packetsize"]]) - lambda))
 	}
 	sum
 }
 
+# This fucntion returns the average number of packet in the system
 calc_avg_pkts_in_sys <- function() {
 	res <- 0
 	num_links <- length(LinkCapacities)
@@ -134,6 +60,8 @@ calc_avg_pkts_in_sys <- function() {
 	res
 }
 
+# Given an average number of packets in the system (L), this function uses 
+# Little's Law and returns the average packet delay in the system
 calc_avg_pkt_delay_in_sys <- function(L) {
 	lambda <- 0
 
@@ -143,7 +71,7 @@ calc_avg_pkt_delay_in_sys <- function(L) {
 	L / lambda
 }
 
-#collect_input()
+
 paramters()
 
 for (i in 1:length(Flows)) {
