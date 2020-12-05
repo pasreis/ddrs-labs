@@ -1,7 +1,6 @@
 #Determines the flow blocking probabilities of a circuit switched network using
 #the reduced load approximation. It uses the method of repeated substitutions
 #(Keith Ross book, page 184)
-setwd("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/circnets")
 source("erlB.R")
 
 ##############################################################################
@@ -14,7 +13,7 @@ source("erlB.R")
 
 #Define here the capacity of each link. The capacity must be expressed in number
 #of circuits. This assumes that each call occupies one circuit.
-LinkCapacities=c(2,2,2,2,2,2,2,2,2,2) #In number of circuits
+LinkCapacities=c(0,5,13,0,13,7,0,13,0,0) #In number of circuits
 
 #Define here the flows. Flows is a list of lists that stores in each list (1)
 #the offered load and (2) the route of each flow; the routes must be defined
