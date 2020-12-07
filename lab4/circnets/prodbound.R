@@ -1,6 +1,6 @@
 #Determines the flow blocking probabilities of a circuit switched network using
 #the product bound.
-
+setwd("~/Desktop/DDRS - Performance/LABS/ddrs-labs/lab4/circnets")
 source("erlB.R")
 
 ##############################################################################

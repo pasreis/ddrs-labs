@@ -18,14 +18,14 @@ parameters = function() {
   #call duration, call arrival rate, call bandwidth and the route of each flow;
   #the routes must be defined using the link identifiers (and not the node
   #identifiers) bwds: 20,13,13,13,18,20
-  Flows<<-list(list(duration=0.2,rate=5,bwd=1,route=c(5,6)),
-               list(duration=1,rate=5,bwd=1,route=c(5)),
-               list(duration=1,rate=5,bwd=1,route=c(8)),
-               list(duration=1,rate=5,bwd=1,route=c(3)),
-               list(duration=0.2,rate=5,bwd=1,route=c(2,3)),
-               list(duration=0.2,rate=5,bwd=1,route=c(8,6)))
+  Flows<<-list(list(duration=1/8,rate=8,bwd=1,route=c(5,6)),
+               list(duration=5/8,rate=8,bwd=1,route=c(5)),
+               list(duration=5/8,rate=8,bwd=1,route=c(8)),
+               list(duration=5/8,rate=8,bwd=1,route=c(3)),
+               list(duration=1/8,rate=8,bwd=1,route=c(2,3)),
+               list(duration=1/8,rate=8,bwd=1,route=c(8,6)))
   
   #Definition of the simulation end time, function of the minimum arrival rate
-  endTime<<-10000*(1/5)
+  endTime<<-10000*(1/8)
   
 }
