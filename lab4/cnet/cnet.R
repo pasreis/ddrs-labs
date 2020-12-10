@@ -7,7 +7,7 @@ source("timing.R")
 source("arrivals.R")
 source("departures.R")
 source("report.R")
-  
+set.seed(80)
 parameters()
   
 init()

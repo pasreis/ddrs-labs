@@ -6,7 +6,7 @@ source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/timi
 source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/arrivals.R")
 source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/departures.R")
 source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/report.R")
-
+set.seed(59)
 parameters()
 
 init()

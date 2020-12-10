@@ -12,20 +12,16 @@ parameters = function() {
   #bandwidth of each flow (bwd parameter of Flows list) must also be expressed in bits/s; if
   #expressed in number of circuits, the call bandwith is the number of circuits
   #ocuppied by each call
-  LinkCapacities<<-c(0,5,13,0,13,7,0,13,0,0)
+  LinkCapacities<<-c(10,10,10,10)
   
   #Define here the flows. Flows is a list of lists that stores in each list the
   #call duration, call arrival rate, call bandwidth and the route of each flow;
   #the routes must be defined using the link identifiers (and not the node
-  #identifiers) bwds: 20,13,13,13,18,20
-  Flows<<-list(list(duration=1/8,rate=8,bwd=1,route=c(5,6)),
-               list(duration=5/8,rate=8,bwd=1,route=c(5)),
-               list(duration=5/8,rate=8,bwd=1,route=c(8)),
-               list(duration=5/8,rate=8,bwd=1,route=c(3)),
-               list(duration=1/8,rate=8,bwd=1,route=c(2,3)),
-               list(duration=1/8,rate=8,bwd=1,route=c(8,6)))
+  #identifiers)
+  Flows<<-list(list(duration=2,rate=2,bwd=1,route=c(1,3,4)),
+               list(duration=2,rate=1.5,bwd=1,route=c(2,3,4)))
   
   #Definition of the simulation end time, function of the minimum arrival rate
-  endTime<<-10000*(1/8)
+  endTime<<-666.67
   
 }
