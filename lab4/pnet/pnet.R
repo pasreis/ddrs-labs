@@ -1,11 +1,11 @@
 #This program simulates a packet-switched network with fixed routing to estimate
 #the average packet delay of each flow
-source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/parameters.R")
-source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/init.R")
-source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/timing.R")
-source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/arrivals.R")
-source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/departures.R")
-source("/Users/enrico/Desktop/DDRS\ -\ Performance/LABS/ddrs-labs/lab4/pnet/report.R")
+source("parameters.R")
+source("init.R")
+source("timing.R")
+source("arrivals.R")
+source("departures.R")
+source("report.R")
 
 parameters()
 
