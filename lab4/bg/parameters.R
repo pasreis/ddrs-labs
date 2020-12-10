@@ -19,7 +19,7 @@ LinkCapacities<<-matrix(c(0, 256e3, 256e3,     0,     0,     0,
 #3 columns. Each row corresponds to a different flow, and the three columns
 #correspond to (1) the origin node, (2) the destination node, and (3) the
 #offered rate between the two previous nodes, expressed in bits/sec
-Flows<<-matrix(c(1, 6, 215e3 + 128e3,
+Flows<<-matrix(c(1, 6, 215e3+128e3,
                  1, 5, 64e3,
                  2, 5, 128e3),
                nrow=3,

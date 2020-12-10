@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1575116907371.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1764229929",
+    "id" : "6163D2F2",
+    "lastKnownWriteTime" : 1574361294,
+    "last_content_update" : 1574361294,
+    "path" : "C:/Users/ruiva/Google Drive/ddrs book/DDRS book Krantz/Chapters/optim/opt_heuristics/R/localsearchrouting/lsroute_AB.R",
+    "project_path" : "lsroute_AB.R",
+    "properties" : {
+        "cursorPosition" : "64,31",
+        "scrollLine" : "48",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

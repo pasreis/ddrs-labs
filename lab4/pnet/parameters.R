@@ -14,11 +14,10 @@ parameters <- function() {
   #arrival rate (in packets/second), the mean packet length (in bits) and the
   #route of each flow; the routes must be defined using the link identifiers
   #(and not the node identifiers)
-  Flows<<-list(list(rate=5.625,packetsize=4000,route=c(1,3,4)),
-               list(rate=16.875 ,packetsize=4000,route=c(2,3,4)))
+  Flows<<-list(list(rate=3.75,packetsize=4000,route=c(1,3,4)),
+               list(rate=11.25 ,packetsize=4000,route=c(2,3,4)))
 
   #Define here the simulation end time, function of the minimum rate
-  endTime<<-16.876*177.8
-  set.seed(68)
+  endTime<<-266.67
 
 }
