@@ -19,7 +19,7 @@ R<<-matrix(c(0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
            nrow=17,ncol=17)
 
-#Matrix that defines the link lengths, in kilomentes; L(i,j) is the length of
+#Matrix that defines the link lengths, in kilometers; L(i,j) is the length of
 #the link from i to j
 L<<-matrix(c(0,   179,   0,   0, 207,   0,   0,   0,   0,   0, 422,   0,   0,   0,   0,   0,   0,
              179,   0,  91,   0, 155,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
@@ -40,7 +40,7 @@ L<<-matrix(c(0,   179,   0,   0, 207,   0,   0,   0,   0,   0, 422,   0,   0,   
              0,     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  70, 103,   0),
            nrow=17,ncol=17)
 
-#Matrix that defines the traffic offered to each OD pair, in Mbits/s; R[i,j] is
+#Matrix that defines the traffic offered to each OD pair, in Mbits/s; Tr[i,j] is
 #the traffic offered from node i to node j
 Tr<<-matrix(c(0,  27,   78,  18,  14,  60,  14,  17,  13,  13,  11,  15,  15,  55,  17,  14,  12,
               60,  0,   80,  38,  44, 290,  79,  62,  65,  51,  78,  70,  51, 280,  42,  64,  54,

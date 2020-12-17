@@ -48,7 +48,7 @@ cat(sprintf("Average packet delay in scenario A = %f",AverageDelay),"\n")
 
 Rates=matrix(rep(0,len=numNodes^2),nrow=numNodes) #Initialize matrix that stores the total traffic rates of each link
 
-numODpairs=numNodes^2-numNodes #Total number of OD pairs
+numODPairs=numNodes^2-numNodes #Total number of OD pairs
 
 #Builds list of remaining OD pairs, starting with all OD pairs 
 RemainingODPairs=list()
@@ -63,7 +63,7 @@ for (i in 1:numNodes) {
 }
 
 #Assigns a path to each flow (OD pair), one by one
-numRemainingODPairs=numODpairs #Number of remaining OD pairs
+numRemainingODPairs=numODPairs #Number of remaining OD pairs
 while (numRemainingODPairs>0) { #Loops until all OD pairs are considered
   LinkDelays=1/(Mu-Rates)+L*1e3/3e8 #Link average delays
   LinkDelays[R==0]=Inf #Link average delay is infinity if there is no link
