@@ -4,10 +4,10 @@ source("Z:\\Documents\\MEIC\\SEMESTRE3\\DDRS\\labs\\lab5\\localsearchrouting\\sh
 # source("Enrico metti qua il tuo path per il file BuildSolution")
 # source("path per localsearchrouting/lsroute_aux.R")
 
-numNodes <<- 17
-numODPairs=numNodes^2-numNodes #Total number of OD pairs
-numRoutes <- 272
-Mu <- 1000
+numNodes <<- nrow(R)
+numODPairs <<- numNodes^2 - numNodes #Total number of OD pairs
+numRoutes <<- numODPairs
+Mu <- 1e9
 Rates <- matrix(rep(0, len=numNodes^2), nrow=numNodes)
 
 UpdateRates <- function(solution) {
@@ -27,12 +27,11 @@ UpdateRates <- function(solution) {
 
 Evaluate <- function(solution) {
 	#Computes the maximum link load and the average packet delay of a solution, using the Kleinrock approximation.
-	print("Evaluate: Started!")
+	#print("Evaluate: Started!")
 	#pdateRates(solution)
+	
 	for (route in solution) {
 		lenRoute <- length(route)
-		print(paste("lenRoute",lenRoute))
-		print(route)
 		for (i in 1:numNodes) {
 			for (j in 1:numNodes) {
 				for (k in 1:(lenRoute - 1)) {
@@ -49,18 +48,19 @@ Evaluate <- function(solution) {
 	LinkPackets=Rates*LinkDelays #Link average number of packets
 	AverageDelay=sum(LinkPackets)/TotalRate #Average packet delay
 
-	print(paste("Evaluate: average delay =", AverageDelay))
+	#print(paste("Evaluate: average delay =", AverageDelay))
 	AverageDelay
 }
 
 BuildNeighbour <- function(solution, i) {
-	print("TODO BuildNeighbour function")
+	#print("TODO BuildNeighbour function")
 	# Remove flow i
 	removed_flow <- solution[[i]]
 	solution[[i]] <- NULL
 
 	# Update Rates
 	#UpdateRates(solution)
+
 	for (route in solution) {
 		lenRoute <- length(route)
 		for (i in 1:numNodes) {
@@ -73,28 +73,29 @@ BuildNeighbour <- function(solution, i) {
 			}
 		}
 	}
-
+	
 	# Apply Dijstra
 	src <- removed_flow[1]
 	dst <- removed_flow[length(removed_flow)]
 	other_route <- ShortestPath(Rates, src, dst)
-
+	other_route <- other_route[-length(other_route)]
 	# Insert in Routes
-	print(paste("Route to be Added: ", other_route))
 	solution[[length(solution) + 1]] <- other_route
 
-	print("BuildNeighbour: solution =")
+	#print("BuildNeighbour: solution =")
 	# Return Routes
 	solution
 }
 
 GlobalBest <- Inf
-numIterations <- 10
+numIterations <- 2
 
 for (n in 1:numIterations) {
 	print(paste("iteration:",n))
+	Rates <- matrix(rep(0, len=numNodes^2), nrow=numNodes)
 	CurrentSolution <- BuildSolution()
 	CurrentObjective <- Evaluate(CurrentSolution)
+	print(paste("Current Average Delay:", CurrentObjective))
 	rep <- TRUE
 
 	while (rep == TRUE) {
@@ -110,16 +111,18 @@ for (n in 1:numIterations) {
 			}
 		}
 
+		print("=================================================================")
 		print(paste("NeighbourBest =", NeighbourBest))
 		print(paste("CurrentObjective =", CurrentObjective))
 		if (NeighbourBest < CurrentObjective) {
-			print("OK, other cylce")
+			print("NOK, other cylce")
 			CurrentObjective <- NeighbourBest
 			CurrentSolution <- NeighbourBestSolution
 		} else {
-			print("NOK, other iteration")
+			print("OK, other iteration")
 			rep <- FALSE
 		}
+		print("=================================================================")
 	}
 
 	if (CurrentObjective < GlobalBest) {
@@ -128,7 +131,10 @@ for (n in 1:numIterations) {
 	}
 }
 
-print(GlobalBest)
+print(Rates)
+LinkLoads <- Rates / Mu
+print(paste("Maximum Link Load:", max(LinkLoads)))
+print(paste("Average Packet Delay:", GlobalBest))
 
 
 
